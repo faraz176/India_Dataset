@@ -208,33 +208,35 @@ plt.show()
 # y = y[:-forecast_out]
 
 
-#Trainig
-#x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2)
+# #Trainig
+# x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2)
 
 
-#Our linear classifier
-#clf = LinearRegression()
-#clf.fit(x_train, y_train)
+# #Our linear classifier
+# clf = LinearRegression()
+# clf.fit(x_train, y_train)
 
-#Accuracy
-#accuracy = clf.score(x_test, y_test)
-#print(accuracy)
+# #Accuracy
+# accuracy = clf.score(x_test, y_test)
+# print(accuracy)
 
 
-#Predicting 
-#forecast_set = clf.predict(x_predict)
+# #Predicting 
+# print(x_predict)
+# forecast_set = clf.predict(x_predict)
+# # print(x_predict)
 
-#Using data from:
+# #Using data from:
 
-#https://www.nytimes.com/interactive/2021/05/25/world/asia/india-covid-death-estimates.html
+# #https://www.nytimes.com/interactive/2021/05/25/world/asia/india-covid-death-estimates.html
 
-#The "likely scenario" indicated about 5.3x the number of reported deaths, our model predicted lower then the actual reported deaths so we have to multipy the number of deaths 
-#from our predictive model by (reported_deaths/predicted model deaths) + 5.3x
+# #The "likely scenario" indicated about 5.3x the number of reported deaths, our model predicted lower then the actual reported deaths so we have to multipy the number of deaths 
+# #from our predictive model by (reported_deaths/predicted model deaths) + 5.3x
 
-# print("")
-# print("")
+# # print("")
+# # print("")
 
-#print(forecast_set)
+# print(forecast_set)
 
 
 
