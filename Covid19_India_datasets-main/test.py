@@ -9,12 +9,12 @@ from sklearn.linear_model import LinearRegression
 import numpy as np 
 import seaborn as sns
 
-#Make a model for the entire of the dataset done
-#Which countries have the highest average case count
-#Which countries have the highest deaths
-#Which countries have the highest death/per confirmed 
-#Which countires are recovering the fastest 
-
+#Make a model for the entire of the dataset (done)
+#Which state have the highest average case count (done)
+#Which state have the highest deaths (done)
+#Show that deaths are linearly increasing (done)
+#How many recovered per confirmed cases
+#Deaths per confirmed cases by state
 
 
 #Concatenated from directories into one big file 
@@ -42,110 +42,105 @@ import seaborn as sns
 #         os.chdir(directory)
 
 
-# f_to_start.to_csv("combined.csv")
+
 
 #Reading the data in 
 location = "C:/Users/flyhi/OneDrive/Desktop/india/Covid19_India_datasets-main/combined.csv"
 new = Path(location)
 df = pd.read_csv(location)
-#print(len(df['State'].unique()))
 
-#####Initial Analysis############
+
+#Data Preprocessing
 
 #Dropping bad columns
 df = df.drop(['Unnamed: 0', 'Unnamed: 0.1'], axis=1)
 df['Time'] = pd.to_datetime(df['Time'])
 
-# print(df.head())
+
+#Exploratory data analysis
 
 
 #The death rate is linear 
 
-plt.scatter(x=df['Time'], y=df['Deaths'])
-plt.show()
+# plt.scatter(x=df['Time'], y=df['Deaths'])
+# plt.show()
 
-#Highest average case count 
+#Average case count by country
 
-fig, ax = plt.subplots() 
-
-
+# fig, ax = plt.subplots() 
 
 missing_set = df[df['New Cases'].notnull()]
-cases = list(missing_set['New Cases'])
-print(missing_set['State'].unique())
-
-list_of_cases = []
-for i in missing_set['State'].unique():
-    new_state = missing_set[missing_set['State'] == i]
-    series_cases = list(new_state['New Cases'])
-    count = 0 
-    for i in range(len(series_cases)):
-        try:
-            
-            count = count + series_cases[i+1] - series_cases[i]
-            #rint(count)
-        except IndexError:
-            print('completed')
-
-    #final_count = count / new_state.shape[0]
-    final_count = count
-    list_of_cases.append(final_count)
-
-
-print(len(list_of_cases))
-
-print(list_of_cases)
-# print(list_of_cases[0])
-# print(len(list_of_cases))
-    
-          
-
-
-#         try:
-#             #if series_cases[i+1] != None:
-#             if i == 0:
-#                 print(list(new_state['State'])[0])
-#             count = series_cases[i+1] 
-#             print(count)
-#         except IndexError:
-#             print('completed')
-
-
-    
-#     list_of_cases.append(count)
-
-# print(list_of_cases)
-
-
-
-# count = 0 
-# for i in len(cases):
-#     count = cases 
 # vz = missing_set.groupby('State')['New Cases'].agg(['sum', 'count'])
 # vz['average'] = vz['sum'] / vz['count']
-
-
-
-
-# states = list(vz.index)
+# print(type(vz))
 # print(vz)
-# # Example data
-#people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
-#y_pos = np.arange(len(list(missing_set['State'].unique())))
-#print(y_pos)
-#Preformance is the values of the actual thing
-#performance =  final_count
-#Idk error to account for (its that black bar on top of the)
-#error = np.random.rand(len(people)) 
 
+
+
+# #Setting Parameters
+# states = list(vz.index)
+
+# # Example data
+# y_pos = np.arange(len(list(missing_set['State'].unique())))
+
+
+# #Preformance is the values of the actual thing
+# performance =  vz['average']
+
+# #Idk error to account for (its that black bar on top of the)
+# error = np.random.rand(len(y_pos)) 
+
+# #Graphing
 # ax.barh(y_pos, performance, align='center')
 # ax.set_yticks(y_pos)
 # ax.set_yticklabels(list(missing_set['State'].unique()))
 # plt.ylabel(list(missing_set['State'].unique()))
-# #plt.set_yticklabels(list(missing_set['State'].unique()))
 # ax.invert_yaxis()  # labels read top-to-bottom
-# ax.set_xlabel('Performance')
-# ax.set_title('How fast do you want to go today?')
+# ax.set_xlabel('Average Case Count')
+# ax.set_title('Average Case Count by State')
+
+# plt.show()
+
+
+# #Deaths per confirmed case 
+
+# fig, ax = plt.subplots() 
+# last_row = pd.DataFrame()
+# for i in missing_set['State'].unique():
+#     new_df = missing_set[missing_set['State'] == i]
+#     last_row=last_row.append(new_df.iloc[[0, -1]], ignore_index=True)
+    
+
+
+
+# #Setting Parameters
+# states = list(missing_set['State'].unique())
+
+# # setting the y-pos
+# y_pos = np.arange(len(list(missing_set['State'].unique())))
+
+# #Preformance is the values of the actual thing
+# new_df = last_row.iloc[lambda x: x.index % 2 == 1]
+
+# new_df['deaths_to_confirmed'] = new_df['Deaths'] / new_df['Confirmed']
+
+# performance = new_df['deaths_to_confirmed']
+
+
+
+
+# #Idk error to account for (its that black bar on top of the)
+# error = np.random.rand(len(y_pos)) 
+
+
+# #Graphing
+# ax.barh(y_pos, performance, align='center')
+# ax.set_yticks(y_pos)
+# ax.set_yticklabels(list(missing_set['State'].unique()))
+# plt.ylabel(list(missing_set['State'].unique()))
+# ax.invert_yaxis()  # labels read top-to-bottom
+# ax.set_xlabel('Deaths per confirmed by each state')
+# ax.set_title('Deaths per confirmed')
 
 # plt.show()
 
@@ -153,40 +148,81 @@ print(list_of_cases)
 
 
 
+#Recoveries per confirmed case 
+fig, ax = plt.subplots() 
+last_row = pd.DataFrame()
+for i in missing_set['State'].unique():
+    new_df = missing_set[missing_set['State'] == i]
+    last_row=last_row.append(new_df.iloc[[0, -1]], ignore_index=True)
+    
+
+
+
+#Setting Parameters
+states = list(missing_set['State'].unique())
+
+# setting the y-pos
+y_pos = np.arange(len(list(missing_set['State'].unique())))
+
+#Preformance is the values of the actual thing
+new_df = last_row.iloc[lambda x: x.index % 2 == 1]
+
+new_df['recoveries_to_confirmed'] = new_df['Recovered'] / new_df['Confirmed']
+
+performance = new_df['recoveries_to_confirmed']
+
+
+
+
+#Idk error to account for (its that black bar on top of the)
+error = np.random.rand(len(y_pos)) 
+
+
+#Graphing
+ax.barh(y_pos, performance, align='center')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(list(missing_set['State'].unique()))
+plt.ylabel(list(missing_set['State'].unique()))
+ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_xlabel('Recoveries per Confirmed Case by each state')
+ax.set_title('Recoveries per Confirmed')
+
+plt.show()
+
 
 
 
 #Modeling and predicting
 
 #Selecting and processing features
-plt.figure(figsize=(15,8))
-sns.heatmap(missing_set.corr(), annot=True, linewidths=1)
-plt.show()
+# plt.figure(figsize=(15,8))
+# sns.heatmap(missing_set.corr(), annot=True, linewidths=1)
+# plt.show()
 
-forecast_out = 10
-x = np.array(missing_set[['Confirmed', 'Recovered', 'Active', 'New Cases']])
-x = preprocessing.scale(x)
-x= x[:-forecast_out]
-x_predict = x[-forecast_out:]
-y = np.array(missing_set['Deaths'])
-y = y[:-forecast_out]
+# forecast_out = 10
+# x = np.array(missing_set[['Confirmed', 'Recovered', 'Active', 'New Cases']])
+# x = preprocessing.scale(x)
+# x= x[:-forecast_out]
+# x_predict = x[-forecast_out:]
+# y = np.array(missing_set['Deaths'])
+# y = y[:-forecast_out]
 
 
 #Trainig
-x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2)
+#x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2)
 
 
 #Our linear classifier
-clf = LinearRegression()
-clf.fit(x_train, y_train)
+#clf = LinearRegression()
+#clf.fit(x_train, y_train)
 
 #Accuracy
-accuracy = clf.score(x_test, y_test)
+#accuracy = clf.score(x_test, y_test)
 #print(accuracy)
 
 
 #Predicting 
-forecast_set = clf.predict(x_predict)
+#forecast_set = clf.predict(x_predict)
 
 #Using data from:
 
@@ -198,7 +234,7 @@ forecast_set = clf.predict(x_predict)
 # print("")
 # print("")
 
-print(forecast_set)
+#print(forecast_set)
 
 
 
